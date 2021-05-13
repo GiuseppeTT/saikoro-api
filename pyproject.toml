@@ -9,6 +9,16 @@ license = "MIT"
 python = "^3.9"
 
 [tool.poetry.dev-dependencies]
+black = "^21.5b1"
+isort = "^5.8.0"
+pre-commit = "^2.12.1"
+
+[tool.isort]
+line_length = 100
+profile = "black"
+
+[tool.black]
+line-length = 100
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
