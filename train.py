@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.compose import TransformedTargetRegressor
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -45,19 +46,19 @@ def load_data():
 
 def define_model():
     steps = [
+        ("imputer", SimpleImputer()),
         ("preprocessor", StandardScaler()),
-        ("regressor", None),
+        ("transformer", TransformedTargetRegressor(inverse_func=convert_to_d100)),
     ]
     parameter_grid = {
-        "regressor": [
+        "transformer__regressor": [
             LinearRegression(),
             RandomForestRegressor(random_state=SEED),
         ],
     }
 
     pipeline = Pipeline(steps)
-    transformed_pipeline = TransformedTargetRegressor(pipeline, inverse_func=convert_to_d100)
-    grid_search = GridSearchCV(transformed_pipeline, param_grid=parameter_grid, cv=CV)
+    grid_search = GridSearchCV(pipeline, param_grid=parameter_grid, cv=CV)
 
     return grid_search
 
