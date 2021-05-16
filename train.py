@@ -11,6 +11,8 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from utils import convert_to_d100
+
 SEED = 42
 CV = 2
 
@@ -24,7 +26,6 @@ def main():
     try:
         model = joblib.load(MODEL_PATH)
     except FileNotFoundError:
-
         model = define_model()
         model.fit(X_train, y_train)
         joblib.dump(model, MODEL_PATH)
@@ -36,30 +37,27 @@ def main():
 
 def load_data():
     dice = pd.read_csv(DATA_PATH)
-    X, y = dice.drop("D100", axis="columns"), dice["D100"]
+    X, y = dice.drop("d100", axis="columns"), dice["d100"]
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=SEED)
 
     return X_train, X_test, y_train, y_test
 
 
 def define_model():
-    pipeline = Pipeline(
-        steps=[
-            ("preprocessing", StandardScaler()),
-            ("regressor", LinearRegression()),
-        ]
-    )
-
-    transformed_pipeline = TransformedTargetRegressor(pipeline, inverse_func=np.rint)
-
-    param_grid = {
+    steps = [
+        ("preprocessor", StandardScaler()),
+        ("regressor", None),
+    ]
+    parameter_grid = {
         "regressor": [
             LinearRegression(),
             RandomForestRegressor(random_state=SEED),
-        ]
+        ],
     }
 
-    grid_search = GridSearchCV(transformed_pipeline, param_grid=param_grid, cv=CV)
+    pipeline = Pipeline(steps)
+    transformed_pipeline = TransformedTargetRegressor(pipeline, inverse_func=convert_to_d100)
+    grid_search = GridSearchCV(transformed_pipeline, param_grid=parameter_grid, cv=CV)
 
     return grid_search
 
