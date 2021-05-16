@@ -49,7 +49,7 @@
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [8000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "poetry install --no-root && pre-commit install --install-hooks",
