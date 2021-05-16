@@ -6,7 +6,7 @@ import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, ConstrainedInt
 
-from utils import convert_to_d100
+from utils import convert_to_d100  # Necessary for joblib load model
 
 MODEL_PATH = Path("model/model.joblib")
 
@@ -61,7 +61,7 @@ model = joblib.load(MODEL_PATH)
 app = FastAPI()
 
 
-@app.post("/predict/")
+@app.post("/predict")
 def predict(data: DiceData) -> list[D100]:
     X = pd.DataFrame(dict(data))
     prediction = model.predict(X).tolist()

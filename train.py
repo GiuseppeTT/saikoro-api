@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import joblib
-import numpy as np
 import pandas as pd
 from sklearn.compose import TransformedTargetRegressor
 from sklearn.ensemble import RandomForestRegressor
@@ -24,12 +23,9 @@ MODEL_PATH = Path("model/model.joblib")
 def main():
     X_train, X_test, y_train, y_test = load_data()
 
-    try:
-        model = joblib.load(MODEL_PATH)
-    except FileNotFoundError:
-        model = define_model()
-        model.fit(X_train, y_train)
-        joblib.dump(model, MODEL_PATH)
+    model = define_model()
+    model.fit(X_train, y_train)
+    joblib.dump(model, MODEL_PATH)
 
     performance = mean_squared_error(model.predict(X_test), y_test, squared=False)
 
