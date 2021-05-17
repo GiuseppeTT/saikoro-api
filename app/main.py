@@ -5,7 +5,6 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, ConstrainedInt
-
 from utils import convert_to_d100  # Necessary for joblib load model
 
 MODEL_PATH = Path("model/model.joblib")
