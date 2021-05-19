@@ -80,4 +80,4 @@ jobs:
           app-name: saikoro-api
           slot-name: production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: 'https://hub.docker.com/repository/docker/${{ secrets.DOCKERHUB_TAG }}'
+          images: 'docker.io/${{ secrets.DOCKERHUB_TAG }}'
