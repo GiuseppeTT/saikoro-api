@@ -47,6 +47,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: model
+          path: app/model
 
       - name: Install docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -60,6 +61,7 @@ jobs:
       - name: Build and push docker image to registry
         uses: docker/build-push-action@v2
         with:
+          context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_TAG }}
 
@@ -78,4 +80,4 @@ jobs:
           app-name: saikoro-api
           slot-name: production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: 'https://hub.docker.com/repository/docker/${{ secrets.DOCKERHUB_TAG }}'
+          images: 'docker.io/${{ secrets.DOCKERHUB_TAG }}'
