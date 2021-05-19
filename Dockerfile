@@ -1,12 +1,10 @@
 FROM python:3.9
 
-WORKDIR /app/
-
 # Install poetry and python packages
 # Disable virtual environment because it is both unnecessary in and a headache to deal with containers.
 ENV POETRY_VIRTUALENVS_CREATE="false"
 
-COPY ./pyproject.toml ./poetry.lock /app/
+COPY ./pyproject.toml ./poetry.lock
 
 RUN pip3 --disable-pip-version-check --no-cache-dir install poetry \
     && rm -rf /tmp/pip-tmp \
@@ -14,6 +12,9 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install poetry \
 
 # Copy app
 COPY ./app /app
+
+# Define container execution
+WORKDIR /app/
 
 EXPOSE 80
 
