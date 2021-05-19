@@ -47,10 +47,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: model
-          path: app/model/model.joblib
-          
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+          path: app/model
       
       - name: Install docker Buildx
         uses: docker/setup-buildx-action@v1
