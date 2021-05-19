@@ -48,7 +48,7 @@ jobs:
         with:
           name: model
           path: app/model
-        
+
       - name: Install docker Buildx
         uses: docker/setup-buildx-action@v1
 
